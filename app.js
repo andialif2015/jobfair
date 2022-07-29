@@ -4,7 +4,7 @@ const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
 const multer  = require('multer')
-const { PORT } = process.env;
+const PORT = 3001;
 const morgan = require('morgan');
 const upload = multer();
 
