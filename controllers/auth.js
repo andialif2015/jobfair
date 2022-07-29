@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const v = new Validator();
 const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken');
-const secretKey = process.env.SECRET_KEY;
+const secretKey = "ini_key_rahasia";
 
 module.exports = {
     register: async (req, res) => {
