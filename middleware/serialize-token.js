@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
         }
         
         const token = bearer.split(' ')[1];
-        const secretKey = process.env.SECRET_KEY;
+        const secretKey = 'ini_key_rahasia';
         const decode = jwt.verify(token, secretKey);
         req.user = decode;
 
