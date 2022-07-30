@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
+    "username": "lenteral_jobfairadmin",
+    "password": "Cgq4sLWge(~l",
+    "database": "lenteral_jobfair",
+    "host": "103.150.60.234",
     "dialect": "mysql"
   },
   "test": {
