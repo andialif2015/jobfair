@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   Umkm.init({
     user_id: DataTypes.INTEGER,
     nama_toko: DataTypes.STRING,
-    alamat: DataTypes.STRING,
-    no_telp: DataTypes.STRING,
-    email: DataTypes.STRING
+    jenis_usaha: DataTypes.STRING,
+    tahun_berdiri: DataTypes.INTEGER,
+    alamat: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Umkm',

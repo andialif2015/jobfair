@@ -16,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
   Pelamar.init({
     user_id: DataTypes.INTEGER,
     nama_lengkap: DataTypes.STRING,
-    jk: DataTypes.STRING,
     tgl_lahir: DataTypes.DATEONLY,
-    kota: DataTypes.STRING,
-    tempat_tinggal: DataTypes.STRING,
-    status: DataTypes.STRING,
+    umur: DataTypes.INTEGER,
+    jk: DataTypes.STRING,
+    alamat: DataTypes.STRING,
     img_url: DataTypes.STRING
+
   }, {
     sequelize,
     modelName: 'Pelamar',

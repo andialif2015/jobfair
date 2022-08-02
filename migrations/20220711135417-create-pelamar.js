@@ -14,19 +14,16 @@ module.exports = {
       nama_lengkap: {
         type: Sequelize.STRING
       },
-      jk: {
-        type: Sequelize.STRING
-      },
       tgl_lahir: {
         type: Sequelize.DATEONLY
       },
-      kota: {
-        type: Sequelize.STRING
+      umur: {
+        type: Sequelize.INTEGER
       },
-      tempat_tinggal: {
-        type: Sequelize.STRING
+      jk: {
+        type: Sequelize.INTEGER
       },
-      status: {
+      alamat: {
         type: Sequelize.STRING
       },
       img_url: {

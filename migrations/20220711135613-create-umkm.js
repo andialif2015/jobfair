@@ -14,13 +14,13 @@ module.exports = {
       nama_toko: {
         type: Sequelize.STRING
       },
+      jenis_usaha: {
+        type: Sequelize.STRING
+      },
+      tahun_berdiri: {
+        type: Sequelize.INTEGER
+      },
       alamat: {
-        type: Sequelize.STRING
-      },
-      no_telp: {
-        type: Sequelize.STRING
-      },
-      email: {
         type: Sequelize.STRING
       },
       createdAt: {

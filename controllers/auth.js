@@ -1,4 +1,4 @@
-const { User, Pelamar } = require('../models');
+const { User, Pelamar, Umkm } = require('../models');
 const Validator = require('fastest-validator');
 const bcrypt = require('bcrypt');
 const v = new Validator();
@@ -9,12 +9,16 @@ const secretKey = "ini_key_rahasia";
 module.exports = {
     register: async (req, res) => {
         try{
-            const { email,password,no_hp, nama } = req.body;
+            
+            const { email,password,no_hp, nama, user_type } = req.body;
+        
             const schema = {
                 email: 'email|required',
                 password: 'string|required|min:8',
-                no_hp: 'string|required'
+                no_hp: 'string|required',
+                nama: 'string|required'
             }
+            
             const validate = v.validate(req.body, schema);
             if (validate.length) {
                 return res.status(400).json({
@@ -26,7 +30,7 @@ module.exports = {
 
             const user = await User.findOne({
                 where:{
-                    email
+                    [Op.or]: [{email: email}, { no_hp: no_hp } ]
                 }
             });
             if(user){
@@ -44,7 +48,7 @@ module.exports = {
                 email: email,
                 no_hp: no_hp,
                 password: passwordHash,
-                role: 1
+                user_type: parseInt(user_type),
             });
         
             return res.status(201).json({
@@ -55,12 +59,11 @@ module.exports = {
                     nama: newUser.nama,
                     email: newUser.email,
                     no_hp: newUser.hp_hp,
-                    role: newUser.role,
+                    user_type: newUser.type,
                     createdAt: newUser.createdAt,
                     updatedAt: newUser.updatedAt
                 }
             });
-            
         }catch(err){
             res.status(500).json({
                 status: false,
@@ -71,10 +74,10 @@ module.exports = {
     },
     login: async (req, res) => {
         try{
-            const { email, password } = req.body;
+            const { emailHp, password } = req.body;
             const user = await User.findOne({
                 where:{
-                    [Op.or]: [{ email: email}, { no_hp: email }]
+                    [Op.or]: [{ email: emailHp}, { no_hp: emailHp }]
                 }
             });
             if(!user){
@@ -96,6 +99,7 @@ module.exports = {
                 id: user.id,
                 email: user.email,
                 no_hp: user.no_hp,
+                user_type: user.user_type,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt
             }
@@ -117,19 +121,90 @@ module.exports = {
             });
         }
     },
-    dataDiri: async (req, res) => {
+    dataDiriPelamar: async (req, res) => {
         try{
             const user = req.user;
-
-            const schema = {
-                nama_lengkap: 'string',
-                tgl_lahir: 'string',
-                jk: 'string',
-                kota: 'string',
-                tempat_tinggal: 'string',
-                status: 'string'
+            let jk = req.body.jk;
+            let umur = req.body.umur;
+            jk = parseInt(jk);
+            umur = parseInt(umur);
+            const dataPelamar = {
+                nama_lengkap: req.body.nama_lengkap,
+                tgl_lahir: req.body.tgl_lahir,
+                jk: jk,
+                umur: umur,
+                alamat: req.body.alamat
             }
-            const validate = v.validate(req.body, schema);
+                const schema = {
+                    nama_lengkap: 'string|requried',
+                    tgl_lahir: 'string|requried',
+                    jk: 'number|required',
+                    umur: 'number|required',
+                    alamat: 'string|requried'
+                }
+                const validate = v.validate(dataPelamar, schema);
+                if(validate.length){
+                    return res.status(400).json({
+                        status: false,
+                        message: "bad request!",
+                        data: validate
+                    });
+                }
+                
+                const isAlready = await Pelamar.findOne({
+                    where:{
+                        user_id: user.id
+                    }
+                })
+
+                if(isAlready){
+                    return res.status(400).json({
+                        status: false,
+                        message: "Data Already Exists",
+                        data: null
+                    })
+                }
+
+                const pelamar = await Pelamar.create({
+                    user_id: user.id,
+                    nama_lengkap: dataPelamar.nama_lengkap,
+                    tgl_lahir: dataPelamar.tgl_lahir,
+                    jk: dataPelamar.jk,
+                    umur: dataPelamar.umur,
+                    alamat: dataPelamar.alamat
+                });
+
+                return res.status(201).json({
+                    status: true,
+                    message: "Berhasil tambah data diri pelamar",
+                    data: pelamar
+                });
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    dataDiriUmkm: async (req,res) => {
+        try{
+            const user = req.user;
+            let tahun_berdiri = req.body.tahun_berdiri;
+            tahun_berdiri = parseInt(tahun_berdiri);
+            const dataUmkm = {
+                nama_toko: req.body.nama_toko,
+                jenis_usaha: req.body.jenis_usaha,
+                tahun_berdiri: tahun_berdiri,
+                alamat: req.body.alamat,
+            };
+            const schema = {
+                nama_toko: 'string|required',
+                jenis_usaha: 'string|required',
+                tahun_berdiri: 'number|required',
+                alamat: 'string|required',
+            }
+            const validate = v.validate(dataUmkm, schema);
             if(validate.length){
                 return res.status(400).json({
                     status: false,
@@ -137,11 +212,13 @@ module.exports = {
                     data: validate
                 });
             }
-            const isAlready = Pelamar.findOne({
+
+            const isAlready = await Umkm.findOne({
                 where:{
                     user_id: user.id
                 }
-            })
+            });
+
             if(isAlready){
                 return res.status(400).json({
                     status: false,
@@ -150,24 +227,23 @@ module.exports = {
                 })
             }
 
-            const pelamar = await Pelamar.create({
+            const umkm = await Umkm.create({
                 user_id: user.id,
-                nama_lengkap: req.body.nama_lengkap,
-                jk: req.body.jk,
-                kota: req.body.kota,
-                tempat_tinggal: req.body.tempat_tinggal,
-                status: req.body.status
+                nama_toko: dataUmkm.nama_toko,
+                jenis_usaha: dataUmkm.jenis_usaha,
+                tahun_berdiri: dataUmkm.tahun_berdiri,
+                alamat: dataUmkm.alamat,
             });
 
-            return res.status(200).json({
+            return res.status(201).json({
                 status: true,
-                message: "Berhasil tambah data diri",
-                data: pelamar
+                message: "Berhasil tambah data usaha",
+                data: umkm
             });
 
         }catch(err){
             return res.status(500).json({
-                status: false,
+                status:false,
                 message: err.message,
                 data: null
             })

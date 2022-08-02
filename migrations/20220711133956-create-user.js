@@ -20,8 +20,8 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
-      role: {
-        type: Sequelize.INTEGER
+      user_type: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
