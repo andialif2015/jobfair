@@ -49,6 +49,7 @@ module.exports = {
                 no_hp: no_hp,
                 password: passwordHash,
                 user_type: parseInt(user_type),
+                user_valid: 0
             });
         
             return res.status(201).json({
@@ -59,7 +60,8 @@ module.exports = {
                     nama: newUser.nama,
                     email: newUser.email,
                     no_hp: newUser.hp_hp,
-                    user_type: newUser.type,
+                    user_type: newUser.user_type,
+                    user_valid: newUser.user_valid,
                     createdAt: newUser.createdAt,
                     updatedAt: newUser.updatedAt
                 }
@@ -100,6 +102,7 @@ module.exports = {
                 email: user.email,
                 no_hp: user.no_hp,
                 user_type: user.user_type,
+                user_valid: user.user_valid,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt
             }
@@ -109,7 +112,9 @@ module.exports = {
                 status: true,
                 message: "Login success",
                 data: {
-                    token
+                    token: token,
+                    user_type: dataUser.user_type,
+                    user_valid: dataUser.user_valid
                 }
             })
 
