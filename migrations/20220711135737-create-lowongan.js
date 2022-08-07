@@ -8,20 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nama: {
+      posisi: {
         type: Sequelize.STRING
       },
-      lokasi: {
-        type: Sequelize.STRING
+      gaji: {
+        type: Sequelize.INTEGER
       },
       tgl_mulai: {
         type: Sequelize.DATE
       },
       tgl_akhir: {
         type: Sequelize.DATE
-      },
-      status: {
-        type: Sequelize.BOOLEAN
       },
       umkm_id: {
         type: Sequelize.INTEGER

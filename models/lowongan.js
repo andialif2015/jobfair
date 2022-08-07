@@ -14,11 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Lowongan.init({
-    nama: DataTypes.STRING,
-    lokasi: DataTypes.STRING,
+    posisi: DataTypes.STRING,
+    gaji: DataTypes.INTEGER,
     tgl_mulai: DataTypes.DATE,
     tgl_akhir: DataTypes.DATE,
-    status: DataTypes.BOOLEAN,
     umkm_id: DataTypes.INTEGER
   }, {
     sequelize,

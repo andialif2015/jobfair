@@ -204,6 +204,15 @@ module.exports = {
     dataDiriUmkm: async (req,res) => {
         try{
             const user = req.user;
+
+            if(user.user_valid === true){
+                return res.status(400).json({
+                    status: false,
+                    message: "user sudah isi datadiri!",
+                    data: null
+                });
+            }
+            
             let tahun_berdiri = req.body.tahun_berdiri;
             tahun_berdiri = parseInt(tahun_berdiri);
             const dataUmkm = {
@@ -248,11 +257,40 @@ module.exports = {
                 tahun_berdiri: dataUmkm.tahun_berdiri,
                 alamat: dataUmkm.alamat,
             });
+            const updateUser = await User.update(
+                {
+                    user_valid: 1
+                },
+                {
+                    where: {
+                        id: user.id
+                    }
+                }
+            );
+            const dataUser = await User.findOne({
+                where:{
+                    [Op.or]: [{email: user.email}, { no_hp: user.no_hp } ]
+                }
+            });
+            const dataUserToken = {
+                id: dataUser.id,
+                email: dataUser.email,
+                no_hp: dataUser.no_hp,
+                user_type: dataUser.user_type,
+                user_valid: dataUser.user_valid,
+                createdAt: dataUser.createdAt,
+                updatedAt: dataUser.updatedAt
+            }
 
+            const refreshToken = jwt.sign(dataUserToken, secretKey);
+            
             return res.status(201).json({
                 status: true,
                 message: "Berhasil tambah data usaha",
-                data: umkm
+                data: {
+                    umkm,
+                    token: refreshToken
+                }
             });
 
         }catch(err){
