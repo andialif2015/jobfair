@@ -179,19 +179,40 @@ module.exports = {
                     alamat: dataPelamar.alamat
                 });
 
-                const userValid = await Pelamar.update(
-                    { 
-                        user_valid: 1 
-                    },{
+                const updateUser = await User.update(
+                    {
+                        user_valid: 1
+                    },
+                    {
                         where: {
-                            user_id: user.id
+                            id: user.id
                         }
-                    });
+                    }
+                );
+                const dataUser = await User.findOne({
+                    where:{
+                        [Op.or]: [{email: user.email}, { no_hp: user.no_hp } ]
+                    }
+                });
+                const dataUserToken = {
+                    id: dataUser.id,
+                    email: dataUser.email,
+                    no_hp: dataUser.no_hp,
+                    user_type: dataUser.user_type,
+                    user_valid: dataUser.user_valid,
+                    createdAt: dataUser.createdAt,
+                    updatedAt: dataUser.updatedAt
+                }
+    
+                const refreshToken = jwt.sign(dataUserToken, secretKey);
 
                 return res.status(201).json({
                     status: true,
                     message: "Berhasil tambah data diri pelamar",
-                    data: pelamar
+                    data: {
+                        pelamar,
+                        token: refreshToken
+                    }
                 });
         }catch(err){
             return res.status(500).json({
