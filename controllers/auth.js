@@ -2,7 +2,7 @@ const { User, Pelamar, Umkm } = require('../models');
 const Validator = require('fastest-validator');
 const bcrypt = require('bcrypt');
 const v = new Validator();
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const jwt = require('jsonwebtoken');
 const secretKey = "ini_key_rahasia";
 
@@ -178,6 +178,15 @@ module.exports = {
                     umur: dataPelamar.umur,
                     alamat: dataPelamar.alamat
                 });
+
+                const userValid = await Pelamar.update(
+                    { 
+                        user_valid: 1 
+                    },{
+                        where: {
+                            user_id: user.id
+                        }
+                    });
 
                 return res.status(201).json({
                     status: true,
