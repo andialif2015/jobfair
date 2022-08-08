@@ -1,30 +1,24 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Persyaratans', {
+    await queryInterface.createTable('Trx_save_lowongans', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      jk: {
+      pelamar_id: {
         type: Sequelize.INTEGER
-      },
-      umur: {
-        type: Sequelize.INTEGER
-      },
-      domisili: {
-        type: Sequelize.STRING
-      },
-      keahlian: {
-        type: Sequelize.STRING
-      },
-      lainnya: {
-        type: Sequelize.TEXT
       },
       lowongan_id: {
         type: Sequelize.INTEGER
+      },
+      umkm_id: {
+        type: Sequelize.INTEGER
+      },
+      saved: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Persyaratans');
+    await queryInterface.dropTable('Trx_save_lowongans');
   }
 };

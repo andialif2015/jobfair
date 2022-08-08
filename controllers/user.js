@@ -1,4 +1,4 @@
-const { User, Pelamar, Umkm, Pengalaman, sequelize } = require('../models');
+const { User, Pelamar, Umkm, Pengalaman, sequelize, Trx_save_lowongan, Lowongan } = require('../models');
 const Validator = require('fastest-validator');
 const v = new Validator();
 const { QueryTypes, Op } = require('sequelize');
@@ -284,6 +284,7 @@ module.exports = {
     resetPassword: async (req,res) => {
         try{
             const user = req.user;
+            
             const dataUser = await User.findOne({
                 where: {
                     id: user.id
@@ -321,6 +322,76 @@ module.exports = {
                 message: "Password Berhasil direset",
                 data: null
             });
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    simpanLowongan: async (req, res) => {
+        try{
+            const user = req.user;
+            
+            const pelamar = await Pelamar.findOne(
+                {
+                    attributes: ['id']
+                },    
+                {
+                    where:{
+                        user_id: user.id
+                    }
+                }
+            );
+            
+            const lowongan = await Lowongan.findOne(
+                {
+                    attributes: ['id','umkm_id'],
+                    where: { id: req.body.lowongan_id }
+                }
+            );
+            
+            const checkTrxSave = await Trx_save_lowongan.findOne({
+                where:{
+                    [Op.and]: [{pelamar_id: pelamar.id},{lowongan_id: lowongan.id}]
+                }
+            });
+            // return res.send(!checkTrxSave);
+            if(checkTrxSave){
+                
+               const updateTrx_save_lowongan = await Trx_save_lowongan.update(
+                    { 
+                        saved: req.body.saved
+                    },
+                    { 
+                        where:{
+                            [Op.and]: [{pelamar_id: pelamar.id},{lowongan_id: lowongan.id}]
+                        }
+                    }
+                );
+                return res.status(200).json({
+                    status: true,
+                    message: "Berhasil Update save Lowongan",
+                    data: updateTrx_save_lowongan
+                })
+            }else{
+                
+                const trx_save_lowongan = await Trx_save_lowongan.create({
+                    pelamar_id: pelamar.id,
+                    umkm_id: lowongan.umkm_id,
+                    lowongan_id: lowongan.id,
+                    saved: req.body.saved
+                });
+                return res.status(200).json({
+                    status: true,
+                    message: "Berhasil Simpan saved Lowongan",
+                    data: trx_save_lowongan
+                })
+            }
+
+            
+
         }catch(err){
             return res.status(500).json({
                 status: false,

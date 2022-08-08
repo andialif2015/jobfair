@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Persyaratan extends Model {
+  class Trx_save_lowongan extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,17 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Persyaratan.init({
-    jk: DataTypes.INTEGER,
-    umur: DataTypes.INTEGER,
-    domisili: DataTypes.STRING,
-    keahlian: DataTypes.STRING,
-    lainnya: DataTypes.TEXT,
-    lowongan_id: DataTypes.INTEGER
+  Trx_save_lowongan.init({
+    pelamar_id: DataTypes.INTEGER,
+    lowongan_id: DataTypes.INTEGER,
+    umkm_id: DataTypes.INTEGER,
+    saved: DataTypes.BOOLEAN
   }, {
     sequelize,
-    modelName: 'Persyaratan',
-    tableName: 'persyaratans',
+    modelName: 'Trx_save_lowongan',
   });
-  return Persyaratan;
+  return Trx_save_lowongan;
 };
