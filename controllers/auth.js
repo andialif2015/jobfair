@@ -11,7 +11,7 @@ module.exports = {
         try{
             
             const { email,password,no_hp, nama, user_type } = req.body;
-        
+
             const schema = {
                 email: 'email|required',
                 password: 'string|required|min:8',

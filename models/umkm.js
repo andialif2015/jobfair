@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 const {
   Model
 } = require('sequelize');
@@ -18,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     nama_toko: DataTypes.STRING,
     jenis_usaha: DataTypes.STRING,
     tahun_berdiri: DataTypes.INTEGER,
-    alamat: DataTypes.STRING
+    alamat: DataTypes.STRING,
+    path: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Umkm',

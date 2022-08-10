@@ -3,22 +3,25 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
-const multer  = require('multer')
+
 const PORT = 3001;
 const morgan = require('morgan');
-const upload = multer();
+
+const path = require('path');
 
 app.use(morgan('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded());
+app.use("/image", express.static('public/images'));
+
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 app.get('/', (req,res) => {
-    res.send('ok');
+    const tes = path.basename().toString();
+    res.send(tes);
 })
-app.use('/api',upload.none(), routes);
+
+app.use('/api', routes);
 
 app.listen(PORT, () => {
     console.log('listen on port', PORT);
