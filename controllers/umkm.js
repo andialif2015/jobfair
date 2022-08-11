@@ -113,9 +113,9 @@ module.exports = {
                 lowongan_id: lowongan.id
             });
             
-            return res.status(400).json({
+            return res.status(200).json({
                 status: true,
-                message: "berhasil tambahkan lowongan pekerjaan",
+                message: "Berhasil tambahkan lowongan pekerjaan",
                 data: lowongan
             })
         }catch(err){
