@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Trx_save_lowongan',
+    tableName: 'trx_save_lowongans',
   });
   return Trx_save_lowongan;
 };
