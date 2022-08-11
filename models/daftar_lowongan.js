@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     lowongan_id: DataTypes.INTEGER,
     pelamar_id: DataTypes.INTEGER,
     waktu_daftar: DataTypes.DATE,
-    status: DataTypes.STRING
+    status: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Daftar_lowongan',

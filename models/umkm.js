@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     jenis_usaha: DataTypes.STRING,
     tahun_berdiri: DataTypes.INTEGER,
     alamat: DataTypes.STRING,
-    path: DataTypes.STRING,
+    img_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   }, {
     sequelize,
     modelName: 'Umkm',

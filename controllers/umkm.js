@@ -1,4 +1,4 @@
-const {  Umkm, Lowongan, Deskripsi_kerja, Persyaratan, Pelamar, sequelize } = require('../models');
+const {  Umkm, Lowongan, Deskripsi_kerja, Persyaratan, Pelamar, sequelize, Daftar_lowongan } = require('../models');
 const Validator = require('fastest-validator');
 const v = new Validator();
 const { QueryTypes } = require('sequelize');
@@ -47,7 +47,6 @@ module.exports = {
             const description = req.body.deskripsi;
             let umur = parseInt(req.body.umur);
             
-
             const umkm = await Umkm.findOne(
                 {
                     attributes: ['id']
@@ -159,6 +158,40 @@ module.exports = {
                 message: "Berhasil ambil profil",
                 data: umkm[0]
             })
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    getPelamar: async (req, res) => {
+        try{
+            const user = req.user;
+            const umkm = await Umkm.findOne(
+                { 
+                    attributes: ['id']
+                },
+                {
+                    where:{
+                        user_id: user.id
+                    }
+                }
+            );
+            const daftarPelamar = await sequelize.query(`
+            SELECT daftar_lowongans.*,pelamars.nama_lengkap, pelamars.img_url, users.no_hp, pelamars.alamat  FROM daftar_lowongans 
+            LEFT JOIN pelamars ON pelamars.id = daftar_lowongans.pelamar_id
+            LEFT JOIN users ON users.id = pelamars.user_id
+            WHERE umkm_id = ${umkm.id}
+            `, { type: QueryTypes.SELECT});
+
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil dapat data pelamar",
+                data: daftarPelamar
+            })
+
         }catch(err){
             return res.status(500).json({
                 status: false,
