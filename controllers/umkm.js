@@ -128,7 +128,11 @@ module.exports = {
     },
     getAllLowongan: async (req, res) => {
         try{
-            const lowongan = await Lowongan.findAll();
+            const lowongan = await sequelize.query(`
+            SELECT lowongans.*, umkms.alamat, umkms.nama_toko, umkms.img_url 
+            FROM lowongans 
+            LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
+            `, {type: QueryTypes.SELECT});
             return res.status(200).json({
                 status: true,
                 message: "Berhasil dapatkan semua lowongan",
@@ -151,6 +155,7 @@ module.exports = {
                 LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
                 LEFT JOIN persyaratans ON persyaratans.lowongan_id = lowongans.id
                 LEFT JOIN deskripsi_kerjas ON deskripsi_kerjas.lowongan_id = lowongans.id
+                LEFT JOIN users ON users.id = umkms.user_id
                 WHERE lowongans.id = ${lowongan_id}
             `, {type: QueryTypes.SELECT});
             return res.status(200).json({
