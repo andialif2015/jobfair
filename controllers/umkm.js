@@ -55,7 +55,7 @@ module.exports = {
                 },
                 {
                     where: {
-                        user_id: user.id
+                        user_id: 12
                     }
                 }
             );
