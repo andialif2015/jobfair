@@ -275,7 +275,7 @@ module.exports = {
             return res.status(200).json({
                 status: true,
                 message: "Berhasil dapat riwayat lowongan",
-                data: umkm
+                data: user
             });
         }catch(err){
             return res.status(500).json({
