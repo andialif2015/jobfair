@@ -7,5 +7,6 @@ const upload = multer();
 
 
 router.post('/daftar-lowongan', serializeToken,upload.none(), pelamarController.daftarLowongan);
+router.get('/detail', serializeToken,upload.none(), pelamarController.detailPelamar);
 
 module.exports = router;

@@ -150,18 +150,36 @@ module.exports = {
         try{
             const user = req.user;
             const lowongan_id = req.params.id;
-            const umkm = await sequelize.query(`
-                SELECT * FROM lowongans 
-                LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
-                LEFT JOIN persyaratans ON persyaratans.lowongan_id = lowongans.id
-                LEFT JOIN deskripsi_kerjas ON deskripsi_kerjas.lowongan_id = lowongans.id
-                LEFT JOIN users ON users.id = umkms.user_id
-                WHERE lowongans.id = ${lowongan_id}
+            const lowongan = await sequelize.query(`
+            SELECT lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url
+            FROM lowongans 
+            LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
+            LEFT JOIN persyaratans ON persyaratans.lowongan_id = lowongans.id
+            LEFT JOIN deskripsi_kerjas ON deskripsi_kerjas.lowongan_id = lowongans.id
+            LEFT JOIN users ON users.id = umkms.user_id
+            WHERE lowongans.id = ${lowongan_id}
             `, {type: QueryTypes.SELECT});
+            
+            const persyaratan = await sequelize.query(`
+            SELECT persyaratans.domisili, persyaratans.jk, persyaratans.keahlian, persyaratans.lainnya, persyaratans.umur, persyaratans.lainnya 
+            FROM persyaratans
+            WHERE persyaratans.lowongan_id = ${lowongan_id}
+            `, {type: QueryTypes.SELECT});
+
+            const deskripsi = await sequelize.query(`
+            SELECT deskripsi_kerjas.deskripsi AS Deskpisi_lowongan
+            FROM deskripsi_kerjas 
+            WHERE deskripsi_kerjas.lowongan_id = ${lowongan_id}
+            `, {type: QueryTypes.SELECT});
+
             return res.status(200).json({
                 status: true,
-                message: "Berhasil ambil profil",
-                data: umkm[0]
+                message: "Berhasil ambil detail lowongan",
+                data: {
+                    lowongan,
+                    persyaratan,
+                    deskripsi
+                    }
             })
         }catch(err){
             return res.status(500).json({
@@ -185,7 +203,7 @@ module.exports = {
                 }
             );
             const daftarPelamar = await sequelize.query(`
-            SELECT daftar_lowongans.*,pelamars.nama_lengkap, pelamars.img_url, users.no_hp, pelamars.alamat  FROM daftar_lowongans 
+            SELECT daftar_lowongans.id AS daftar_lowongan_id, daftar_lowongans.waktu_daftar, daftar_lowongans.lowongan_id, daftar_lowongans.pelamar_id,pelamars.nama_lengkap, pelamars.img_url, users.no_hp, pelamars.alamat  FROM daftar_lowongans 
             LEFT JOIN pelamars ON pelamars.id = daftar_lowongans.pelamar_id
             LEFT JOIN users ON users.id = pelamars.user_id
             WHERE umkm_id = ${umkm.id}
@@ -197,6 +215,67 @@ module.exports = {
                 data: daftarPelamar
             })
 
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    terimaLamaran: async (req, res) => {
+        try{
+            const user = req.user;
+            const terimaPelamar = await Daftar_lowongan.update(
+                { 
+                    status: 1 
+                },
+                { 
+                    where: {
+                        id: req.body.daftar_lowongan_id
+                    }
+                }
+            );
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil Terima Pelamar",
+                data: terimaPelamar
+            });
+
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    riwayatLowongan: async (req, res) => {
+        try{
+            const user = req.user;
+            const umkm = await Umkm.findOne(
+                { 
+                    attributes: ['id']
+                },
+                {
+                    where: {
+                        user_id: user.id
+                    }
+                }
+            )
+            const riwayat = await sequelize.query(`
+            SELECT lowongans.posisi, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.nama_toko, umkms.alamat, umkms.img_url
+            FROM lowongans
+            LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
+            LEFT JOIN users ON users.id = umkms.user_id
+            WHERE lowongans.umkm_id = ${umkm.id}
+            `, {type: QueryTypes.SELECT});
+            
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil dapat riwayat lowongan",
+                data: riwayat
+            });
         }catch(err){
             return res.status(500).json({
                 status: false,
