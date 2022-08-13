@@ -49,11 +49,6 @@ module.exports = {
             
             const umkm = await Umkm.findOne(
                 {
-                    attributes: {
-                        include: ['id', 'nama_toko']
-                    }
-                },
-                {
                     where: {
                         user_id: 12
                     }
