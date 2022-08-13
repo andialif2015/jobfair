@@ -11,6 +11,7 @@ module.exports = {
             const pelamar = await Pelamar.findOne(
 
                 {
+                    attributes: ['id'],
                     where: {
                         user_id: user.id
                     }
@@ -49,7 +50,7 @@ module.exports = {
                 {
                     attributes: ['id'],
                     where: {
-                        user_id: 12
+                        user_id: user.id
                     }
                 }
             );
@@ -190,7 +191,8 @@ module.exports = {
             const user = req.user;
             const umkm = await Umkm.findOne(
                 {
-                    where:{
+                    attributes: ['id'],
+                    where: {
                         user_id: user.id
                     }
                 }
@@ -249,6 +251,7 @@ module.exports = {
 
             const umkm = await Umkm.findOne(
                 {
+                    attributes: ['id'],
                     where: {
                         user_id: user.id
                     }
