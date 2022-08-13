@@ -6,9 +6,6 @@ module.exports = {
         try{
             const user = req.user;
             const lowongan = await Lowongan.findOne(
-                { 
-                    attributes: ['id','umkm_id'] 
-                },
                 {
                     where: {
                         id: req.body.lowongan_id    
@@ -16,9 +13,6 @@ module.exports = {
                 }
             );
             const pelamar = await Pelamar.findOne(
-                {
-                    attributes: ['id']
-                },
                 {
                     where: {
                         user_id: user.id
