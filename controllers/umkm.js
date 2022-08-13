@@ -48,9 +48,9 @@ module.exports = {
             let umur = parseInt(req.body.umur);
             
             const umkm = await Umkm.findOne(
-                {
-                    attributes: ['id', 'nama_toko']
-                },
+                // {
+                //     attributes: ['id', 'nama_toko']
+                // },
                 {
                     where: {
                         user_id: user.id
