@@ -48,9 +48,9 @@ module.exports = {
             let umur = parseInt(req.body.umur);
             
             const umkm = await Umkm.findOne(
-                // {
-                //     attributes: ['id', 'nama_toko']
-                // },
+                {
+                    attributes: ['id', 'nama_toko']
+                },
                 {
                     where: {
                         user_id: user.id
@@ -116,7 +116,7 @@ module.exports = {
             return res.status(200).json({
                 status: true,
                 message: "Berhasil tambahkan lowongan pekerjaan",
-                data: user.id
+                data: umkm
             })
         }catch(err){
             return res.status(500).json({
