@@ -253,10 +253,11 @@ module.exports = {
     riwayatLowongan: async (req, res) => {
         try{
             const user = req.user;
+
             const umkm = await Umkm.findOne(
-                { 
-                    attributes: ['id']
-                },
+                // { 
+                //     attributes: ['id']
+                // },
                 {
                     where: {
                         user_id: user.id
@@ -269,13 +270,13 @@ module.exports = {
             FROM lowongans
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
             LEFT JOIN users ON users.id = umkms.user_id
-            WHERE lowongans.umkm_id = ${umkm.id}
+            WHERE lowongans.umkm_id = ${12}
             `, {type: QueryTypes.SELECT});
             
             return res.status(200).json({
                 status: true,
                 message: "Berhasil dapat riwayat lowongan",
-                data: user
+                data: riwayat
             });
         }catch(err){
             return res.status(500).json({
