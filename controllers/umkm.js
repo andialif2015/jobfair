@@ -116,7 +116,7 @@ module.exports = {
             return res.status(200).json({
                 status: true,
                 message: "Berhasil tambahkan lowongan pekerjaan",
-                data: umkm
+                data: user.id
             })
         }catch(err){
             return res.status(500).json({
