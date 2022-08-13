@@ -252,9 +252,6 @@ module.exports = {
             const user = req.user;
 
             const umkm = await Umkm.findOne(
-                // { 
-                //     attributes: ['id']
-                // },
                 {
                     where: {
                         user_id: user.id
@@ -267,7 +264,7 @@ module.exports = {
             FROM lowongans
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
             LEFT JOIN users ON users.id = umkms.user_id
-            WHERE lowongans.umkm_id = ${12}
+            WHERE lowongans.umkm_id = ${umkm.id}
             `, {type: QueryTypes.SELECT});
             
             return res.status(200).json({
