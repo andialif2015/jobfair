@@ -262,7 +262,8 @@ module.exports = {
                         user_id: user.id
                     }
                 }
-            )
+            );
+            
             const riwayat = await sequelize.query(`
             SELECT lowongans.posisi, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.nama_toko, umkms.alamat, umkms.img_url
             FROM lowongans
@@ -274,7 +275,7 @@ module.exports = {
             return res.status(200).json({
                 status: true,
                 message: "Berhasil dapat riwayat lowongan",
-                data: riwayat
+                data: umkm
             });
         }catch(err){
             return res.status(500).json({
