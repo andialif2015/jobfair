@@ -57,61 +57,61 @@ module.exports = {
                     }
                 }
             );
-            const dataRequest = {
-                posisi: req.body.posisi,
-                gaji: req.body.gaji,
-                deskripsi: req.body.deskripsi,
-                jk: req.body.jk,
-                umur: umur,
-                pendidikan: req.body.pendidikan,
-                domisili: req.body.domisili,
-                keahlian: req.body.keahlian,
-                lainnya: req.body.lainnya,
-            }
+            // const dataRequest = {
+            //     posisi: req.body.posisi,
+            //     gaji: req.body.gaji,
+            //     deskripsi: req.body.deskripsi,
+            //     jk: req.body.jk,
+            //     umur: umur,
+            //     pendidikan: req.body.pendidikan,
+            //     domisili: req.body.domisili,
+            //     keahlian: req.body.keahlian,
+            //     lainnya: req.body.lainnya,
+            // }
             
-            const schema = {
-                posisi: 'string|required',
-                gaji: 'string|required',
-                deskripsi: {type: "array", items: "string"},
-                jk: 'string|required',
-                umur: 'number|required',
-                pendidikan: 'string|required',
-                domisili: 'string|required',
-                keahlian: 'string|required',
-                lainnya: 'string|required',
-            }
+            // const schema = {
+            //     posisi: 'string|required',
+            //     gaji: 'string|required',
+            //     deskripsi: {type: "array", items: "string"},
+            //     jk: 'string|required',
+            //     umur: 'number|required',
+            //     pendidikan: 'string|required',
+            //     domisili: 'string|required',
+            //     keahlian: 'string|required',
+            //     lainnya: 'string|required',
+            // }
 
-            const validate = v.validate(dataRequest, schema);
-            if(validate.length){
-                return res.status(400).json({
-                    status: false,
-                    message: "Bad Request!",
-                    data: validate
-                })
-            }
+            // const validate = v.validate(dataRequest, schema);
+            // if(validate.length){
+            //     return res.status(400).json({
+            //         status: false,
+            //         message: "Bad Request!",
+            //         data: validate
+            //     })
+            // }
 
-            const lowongan = await Lowongan.create({
-                posisi: req.body.posisi,
-                gaji: req.body.gaji,
-                tgl_mulai: req.body.tgl_mulai,
-                tgl_akhir: req.body.tgl_akhir,
-                umkm_id: umkm.id
-            });
-            for(i in description){
-                let deskripsiLowongan = await Deskripsi_kerja.create({
-                    deskripsi: description[i],
-                    lowongan_id: lowongan.id
-                });
-            }
-            const persyaratan = await Persyaratan.create({
-                jk: dataRequest.jk,
-                umur: dataRequest.umur,
-                pendidikan: dataRequest.pendidikan,
-                domisili: dataRequest.domisili,
-                keahlian: dataRequest.keahlian,
-                lainnya: dataRequest.lainnya,
-                lowongan_id: lowongan.id
-            });
+            // const lowongan = await Lowongan.create({
+            //     posisi: req.body.posisi,
+            //     gaji: req.body.gaji,
+            //     tgl_mulai: req.body.tgl_mulai,
+            //     tgl_akhir: req.body.tgl_akhir,
+            //     umkm_id: umkm.id
+            // });
+            // for(i in description){
+            //     let deskripsiLowongan = await Deskripsi_kerja.create({
+            //         deskripsi: description[i],
+            //         lowongan_id: lowongan.id
+            //     });
+            // }
+            // const persyaratan = await Persyaratan.create({
+            //     jk: dataRequest.jk,
+            //     umur: dataRequest.umur,
+            //     pendidikan: dataRequest.pendidikan,
+            //     domisili: dataRequest.domisili,
+            //     keahlian: dataRequest.keahlian,
+            //     lainnya: dataRequest.lainnya,
+            //     lowongan_id: lowongan.id
+            // });
             
             return res.status(200).json({
                 status: true,
