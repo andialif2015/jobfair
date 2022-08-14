@@ -148,7 +148,7 @@ module.exports = {
             const user = req.user;
             const lowongan_id = req.params.id;
             const lowongan = await sequelize.query(`
-            SELECT lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url
+            SELECT lowongans.id, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url
             FROM lowongans 
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
             LEFT JOIN persyaratans ON persyaratans.lowongan_id = lowongans.id
