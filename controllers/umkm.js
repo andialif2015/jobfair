@@ -1,7 +1,7 @@
 const {  Umkm, Lowongan, Deskripsi_kerja, Persyaratan, Pelamar, sequelize, Daftar_lowongan } = require('../models');
 const Validator = require('fastest-validator');
 const v = new Validator();
-const { QueryTypes } = require('sequelize');
+const { QueryTypes, Op } = require('sequelize');
 
 module.exports = {
     getLowonganSaveById: async (req, res) => {
@@ -125,6 +125,26 @@ module.exports = {
     },
     getAllLowongan: async (req, res) => {
         try{
+            const search = req.query.s;
+            
+            if(search){
+                const searchLowongan = await sequelize.query(`
+                SELECT lowongans.*, umkms.alamat, umkms.nama_toko, umkms.img_url 
+                FROM lowongans 
+                LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
+                WHERE (
+                    lowongans.posisi like '%${search}%'
+                    OR umkms.nama_toko like '%${search}%'
+                ) 
+                `,{type: QueryTypes.SELECT})
+                return res.status(200).json({
+                    status: true,
+                    message: "Berhasil Search Lowongan",
+                    data: searchLowongan
+                });
+            }
+
+            
             const lowongan = await sequelize.query(`
             SELECT lowongans.*, umkms.alamat, umkms.nama_toko, umkms.img_url 
             FROM lowongans 
