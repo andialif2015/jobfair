@@ -7,6 +7,5 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/data-diri/pelamar', serializeToken , authController.dataDiriPelamar);
 router.post('/data-diri/umkm', serializeToken , authController.dataDiriUmkm);
-router.get('/logout', authController.logout);
 
 module.exports = router;
