@@ -151,9 +151,6 @@ module.exports = {
             SELECT lowongans.id, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url
             FROM lowongans 
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
-            LEFT JOIN persyaratans ON persyaratans.lowongan_id = lowongans.id
-            LEFT JOIN deskripsi_kerjas ON deskripsi_kerjas.lowongan_id = lowongans.id
-            LEFT JOIN users ON users.id = umkms.user_id
             WHERE lowongans.id = ${lowongan_id}
             `, {type: QueryTypes.SELECT});
             
