@@ -135,6 +135,7 @@ module.exports = {
                 WHERE (
                     lowongans.posisi like '%${search}%'
                     OR umkms.nama_toko like '%${search}%'
+                    OR umkms.alamat like '%${search}%'
                 ) 
                 `,{type: QueryTypes.SELECT})
                 return res.status(200).json({
