@@ -169,7 +169,7 @@ module.exports = {
             const user = req.user;
             const lowongan_id = req.params.id;
             const lowongan = await sequelize.query(`
-            SELECT lowongans.id, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url
+            SELECT lowongans.id, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url, umkms.nama_toko
             FROM lowongans 
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
             WHERE lowongans.id = ${lowongan_id}
@@ -191,10 +191,18 @@ module.exports = {
                 status: true,
                 message: "Berhasil ambil detail lowongan",
                 data: {
-                    lowongan,
-                    persyaratan,
-                    deskripsi
-                    }
+                    id_lowongan: lowongan[0].id,
+                    posisi: lowongan[0].posisi,
+                    gaji: lowongan[0].gaji,
+                    tgl_mulai: lowongan[0].tgl_mulai,
+                    tgl_akhir: lowongan[0].tgl_akhir,
+                    alamat_umkm: lowongan[0].alamat,
+                    img_url: lowongan[0].img_url,
+                    nama_toko: lowongan[0].nama_toko,
+                    persyaratan: persyaratan[0],
+                    deskripsi: deskripsi
+                    
+                }
             })
         }catch(err){
             return res.status(500).json({
