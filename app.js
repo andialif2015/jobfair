@@ -12,13 +12,15 @@ const path = require('path');
 app.use(morgan('dev'));
 app.use("/image", express.static('public/images'));
 
+
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req,res) => {
-    const tes = path.basename().toString();
-    res.send(tes);
+    const date = new Date();
+    const month = date.getFullYear();
+    console.log(month);
 })
 
 app.use('/api', routes);

@@ -2,6 +2,7 @@ const {  Umkm, Lowongan, Deskripsi_kerja, Persyaratan, Pelamar, sequelize, Dafta
 const Validator = require('fastest-validator');
 const v = new Validator();
 const { QueryTypes, Op } = require('sequelize');
+const dateHelper = require('../helpers/dateHelpers');
 
 module.exports = {
     getLowonganSaveById: async (req, res) => {
@@ -151,6 +152,14 @@ module.exports = {
             FROM lowongans 
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
             `, {type: QueryTypes.SELECT});
+
+            for(let x in lowongan){
+                lowongan[x].tgl_mulai = dateHelper.dateFormat(lowongan[x].tgl_mulai);
+                lowongan[x].tgl_akhir = dateHelper.dateFormat(lowongan[x].tgl_akhir);
+                lowongan[x].createdAt = dateHelper.dateFormat(lowongan[x].createdAt);
+                lowongan[x].updatedAt = dateHelper.dateFormat(lowongan[x].updatedAt);
+            }
+            
             return res.status(200).json({
                 status: true,
                 message: "Berhasil dapatkan semua lowongan",
