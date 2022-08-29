@@ -138,7 +138,15 @@ module.exports = {
                     OR umkms.nama_toko like '%${search}%'
                     OR umkms.alamat like '%${search}%'
                 ) 
-                `,{type: QueryTypes.SELECT})
+                `,{type: QueryTypes.SELECT});
+
+                for(let x in searchLowongan){
+                    searchLowongan[x].tgl_mulai = dateHelper.dateFormat(searchLowongan[x].tgl_mulai);
+                    searchLowongan[x].tgl_akhir = dateHelper.dateFormat(searchLowongan[x].tgl_akhir);
+                    searchLowongan[x].createdAt = dateHelper.dateFormat(searchLowongan[x].createdAt);
+                    searchLowongan[x].updatedAt = dateHelper.dateFormat(searchLowongan[x].updatedAt);
+                }
+
                 return res.status(200).json({
                     status: true,
                     message: "Berhasil Search Lowongan",
