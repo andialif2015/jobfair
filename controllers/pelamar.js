@@ -20,8 +20,8 @@ module.exports = {
                 }
             })
             if(isExistDaftarLowongan){
-                return res.status(200).json({
-                    status: true,
+                return res.status(400).json({
+                    status: false,
                     message: "Anda sudah daftar lowongan ini",
                     data: null
                 });
