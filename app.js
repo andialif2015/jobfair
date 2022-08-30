@@ -10,7 +10,10 @@ const morgan = require('morgan');
 
 const path = require('path');
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
 app.use(morgan('dev'));
 app.use("/image", express.static('public/images'));
 
