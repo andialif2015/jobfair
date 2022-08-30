@@ -5,13 +5,6 @@ module.exports = {
     daftarLowongan: async (req, res) => {
         try{
             const user = req.user;
-            const lowongan = await Lowongan.findOne(
-                {
-                    where: {
-                        id: req.body.lowongan_id    
-                    }
-                }
-            );
             const pelamar = await Pelamar.findOne(
                 {
                     where: {
@@ -19,15 +12,33 @@ module.exports = {
                     }
                 }  
             );
+
+            const isExistDaftarLowongan = await Daftar_lowongan.findOne({
+                where:{
+                    lowongan_id: req.body.lowongan_id,
+                    pelamar_id: pelamar.id
+                }
+            })
+            if(isExistDaftarLowongan){
+                return res.status(200).json({
+                    status: true,
+                    message: "Anda sudah daftar lowongan ini",
+                    data: null
+                });
+            }
+            
+            const lowongan = await Lowongan.findOne(
+                {
+                    where: {
+                        id: req.body.lowongan_id    
+                    }
+                }
+            );
+
+            
             const date = new Date();
-            // const year = date.getFullYear();
-            // const month = date.getMonth()+1;
-            // const day = date.getDate();
-            // const hours = date.getHours();
-            // const minutes = date.getMinutes();
-            // const seconds = date.getSeconds();
-            // const sekarang = day + '-' +month+ '-' +year + ' ' + hours + ':' + minutes + ':' + seconds;
             const sekarang = date.now();
+            
             const daftar = await Daftar_lowongan.create({
                 umkm_id: lowongan.umkm_id,
                 lowongan_id: lowongan.id,
