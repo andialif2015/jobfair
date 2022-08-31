@@ -15,6 +15,5 @@ router.get('/profil/pelamar',upload.none(), serializeToken, userController.getPr
 router.put('/profil/umkm/edit',upload.none(), serializeToken, userController.updateProfilUmkm);
 router.put('/profil/pelamar/edit',upload.none(), serializeToken, userController.updateProfilPelamar);
 router.put('/profil/reset-password',upload.none(), serializeToken, userController.resetPassword);
-router.put('/profil/reset-password',upload.none(), serializeToken, userController.resetPassword);
 
 module.exports = router;

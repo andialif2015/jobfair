@@ -17,19 +17,24 @@ module.exports = {
                         user_id: user.id
                     }
                 }
-            );
+            );           
             
             const savedLowongan = await sequelize.query(`
-                SELECT * FROM trx_save_lowongans
+                SELECT trx_save_lowongans.*, lowongan.posisi, lowongan.gaji, lowongan.tgl_mulai, lowongan.tgl_akhir, umkms.alamat, umkms.nama_toko, umkms.img_url FROM trx_save_lowongans
                 LEFT JOIN pelamars ON pelamars.id = trx_save_lowongans.pelamar_id
                 LEFT JOIN umkms ON umkms.id = trx_save_lowongans.umkm_id
+                LEFT JOIN lowongan ON lowongan.id = trx_save_lowongans.lowongan.id
                 WHERE pelamar_id = ${pelamar.id}`,
                 {type: QueryTypes.SELECT});
-            
+
+            for(let x in savedLowongan){
+                savedLowongan[x].tgl_mulai = dateHelper.dateFormat(savedLowongan[x].tgl_mulai);
+                savedLowongan[x].tgl_akhir = dateHelper.dateFormat(savedLowongan[x].tgl_akhir);
+            }
             
             return res.status(200).json({
                 status: true,
-                message: "berhasil",
+                message: "Berhasil",
                 data: savedLowongan
             })
                 
@@ -300,6 +305,7 @@ module.exports = {
                     }
                 }
             );
+            console.log(umkm);
             
             const riwayat = await sequelize.query(`
             SELECT lowongans.posisi, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.nama_toko, umkms.alamat, umkms.img_url
@@ -308,6 +314,11 @@ module.exports = {
             LEFT JOIN users ON users.id = umkms.user_id
             WHERE lowongans.umkm_id = ${umkm.id}
             `, {type: QueryTypes.SELECT});
+
+            for(let x in riwayat){
+                riwayat[x].tgl_mulai = dateHelper.dateFormat(riwayat[x].tgl_mulai);
+                riwayat[x].tgl_akhir = dateHelper.dateFormat(riwayat[x].tgl_akhir);
+            }
             
             return res.status(200).json({
                 status: true,
