@@ -23,7 +23,7 @@ module.exports = {
                 SELECT trx_save_lowongans.*, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.nama_toko, umkms.img_url FROM trx_save_lowongans
                 LEFT JOIN pelamars ON pelamars.id = trx_save_lowongans.pelamar_id
                 LEFT JOIN umkms ON umkms.id = trx_save_lowongans.umkm_id
-                LEFT JOIN lowongans ON lowongans.id = trx_save_lowongans.lowongan.id
+                LEFT JOIN lowongans ON lowongans.id = trx_save_lowongans.lowongan_id
                 WHERE pelamar_id = ${pelamar.id}`,
                 {type: QueryTypes.SELECT});
 

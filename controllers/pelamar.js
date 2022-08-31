@@ -69,6 +69,9 @@ module.exports = {
             LEFT JOIN daftar_lowongans ON daftar_lowongans.id = ${req.body.daftar_lowongan_id}
             WHERE pelamars.user_id = ${req.body.pelamar_id}
             `, {type: QueryTypes.SELECT});
+
+            // const pengalaman = await se
+
             return res.status(200).json({
                 status: true,
                 message: "Berhasil ambil data pelamar",
