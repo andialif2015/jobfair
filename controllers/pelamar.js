@@ -62,6 +62,7 @@ module.exports = {
     },
     detailPelamar: async(req, res) => {
         try{
+            const user = req.user;
             const pelamar = await sequelize.query(`
             SELECT pelamars.*, pengalamans.posisi, pengalamans.tahun, pengalamans.lokasi, pengalamans.posisi, users.no_hp, daftar_lowongans.id AS daftar_lowongan_id  FROM pelamars 
             LEFT JOIN pengalamans ON pengalamans.user_id = pelamars.user_id
@@ -70,12 +71,19 @@ module.exports = {
             WHERE pelamars.user_id = ${req.body.pelamar_id}
             `, {type: QueryTypes.SELECT});
 
-            // const pengalaman = await se
+            const pengalaman = await sequelize.query(`
+            SELECT * FROM pengalamans
+            LEFT JOIN users ON users.id = pengalamans.users.id
+            WHERE pengalamans.user_id = ${user.id}
+            `, {type: QueryTypes.SELECT});
 
             return res.status(200).json({
                 status: true,
                 message: "Berhasil ambil data pelamar",
-                data: pelamar
+                data: {
+                    pelamar,
+                    pengalaman
+                }
             });
 
 
