@@ -20,10 +20,10 @@ module.exports = {
             );           
             
             const savedLowongan = await sequelize.query(`
-                SELECT trx_save_lowongans.*, lowongan.posisi, lowongan.gaji, lowongan.tgl_mulai, lowongan.tgl_akhir, umkms.alamat, umkms.nama_toko, umkms.img_url FROM trx_save_lowongans
+                SELECT trx_save_lowongans.*, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.nama_toko, umkms.img_url FROM trx_save_lowongans
                 LEFT JOIN pelamars ON pelamars.id = trx_save_lowongans.pelamar_id
                 LEFT JOIN umkms ON umkms.id = trx_save_lowongans.umkm_id
-                LEFT JOIN lowongan ON lowongan.id = trx_save_lowongans.lowongan.id
+                LEFT JOIN lowongans ON lowongans.id = trx_save_lowongans.lowongan.id
                 WHERE pelamar_id = ${pelamar.id}`,
                 {type: QueryTypes.SELECT});
 
@@ -305,7 +305,6 @@ module.exports = {
                     }
                 }
             );
-            console.log(umkm);
             
             const riwayat = await sequelize.query(`
             SELECT lowongans.posisi, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.nama_toko, umkms.alamat, umkms.img_url
