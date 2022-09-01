@@ -1,5 +1,6 @@
 const { QueryTypes } = require('sequelize');
 const { Pelamar,Daftar_lowongan,Lowongan, sequelize } = require('../models');
+const dateHelper = require('../helpers/dateHelpers');
 
 module.exports = {
     daftarLowongan: async (req, res) => {
@@ -37,7 +38,7 @@ module.exports = {
 
             
             const date = new Date();
-            const sekarang = date.now();
+            const sekarang = dateHelper.dateFormat(date);
             
             const daftar = await Daftar_lowongan.create({
                 umkm_id: lowongan.umkm_id,
