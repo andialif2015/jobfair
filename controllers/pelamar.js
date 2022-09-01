@@ -51,7 +51,7 @@ module.exports = {
                 status: true,
                 message: "Berhasil Daftar",
                 data: daftar
-            })
+            });
 
         }catch(err){
             return res.status(500).json({
@@ -87,7 +87,6 @@ module.exports = {
                     pengalaman
                 }
             });
-
 
         }catch(err){
             return res.status(500).json({

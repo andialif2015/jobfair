@@ -5,11 +5,11 @@ module.exports = {
         const mouth = (dateTime.getMonth()+1 < 10) ? '0'+(dateTime.getMonth()+1) : dateTime.getMonth()+1;
         const year = dateTime.getFullYear();
 
-        const hour = (dateTime.getHours() < 10) ? '0'+ dateTime.getHours() : dateTime.getHours();
-        const minute = (dateTime.getMinutes() < 10) ? '0'+dateTime.getMinutes() : dateTime.getMinutes();
-        const second = (dateTime.getSeconds() < 10) ? '0'+dateTime.getSeconds() : dateTime.getSeconds();
+        // const hour = (dateTime.getHours() < 10) ? '0'+ dateTime.getHours() : dateTime.getHours();
+        // const minute = (dateTime.getMinutes() < 10) ? '0'+dateTime.getMinutes() : dateTime.getMinutes();
+        // const second = (dateTime.getSeconds() < 10) ? '0'+dateTime.getSeconds() : dateTime.getSeconds();
 
-        const sekarang = day + '-' + mouth + '-' + year + ' ' + hour + ':' + minute + ':' + second;
+        const sekarang = day + '-' + mouth + '-' + year;
         return sekarang;
     }
 }
