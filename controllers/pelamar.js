@@ -70,7 +70,7 @@ module.exports = {
             LEFT JOIN pengalamans ON pengalamans.user_id = pelamars.user_id
             LEFT JOIN users ON users.id = pelamars.user_id
             LEFT JOIN daftar_lowongans ON daftar_lowongans.id = ${req.query.daftar_lowongan_id}
-            WHERE pelamars.user_id = ${req.query.pelamar_id}
+            WHERE pelamars.id = ${req.query.pelamar_id}
             `, {type: QueryTypes.SELECT});
 
             const pengalaman = await sequelize.query(`
