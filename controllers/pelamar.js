@@ -75,9 +75,9 @@ module.exports = {
 
             const pengalaman = await sequelize.query(`
             SELECT * FROM pengalamans
-            LEFT JOIN users ON users.id = pengalamans.user_id
             WHERE pengalamans.user_id = ${user.id}
             `, {type: QueryTypes.SELECT});
+
 
             return res.status(200).json({
                 status: true,
