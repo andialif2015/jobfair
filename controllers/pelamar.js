@@ -63,12 +63,13 @@ module.exports = {
     detailPelamar: async(req, res) => {
         try{
             const user = req.user;
+
             const pelamar = await sequelize.query(`
             SELECT pelamars.*, pengalamans.posisi, pengalamans.tahun, pengalamans.lokasi, pengalamans.posisi, users.no_hp, daftar_lowongans.id AS daftar_lowongan_id  FROM pelamars 
             LEFT JOIN pengalamans ON pengalamans.user_id = pelamars.user_id
             LEFT JOIN users ON users.id = pelamars.user_id
-            LEFT JOIN daftar_lowongans ON daftar_lowongans.id = ${req.body.daftar_lowongan_id}
-            WHERE pelamars.user_id = ${req.body.pelamar_id}
+            LEFT JOIN daftar_lowongans ON daftar_lowongans.id = ${req.query.daftar_lowongan_id}
+            WHERE pelamars.user_id = ${req.query.pelamar_id}
             `, {type: QueryTypes.SELECT});
 
             const pengalaman = await sequelize.query(`
