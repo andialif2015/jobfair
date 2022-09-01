@@ -75,9 +75,8 @@ module.exports = {
 
             const pengalaman = await sequelize.query(`
             SELECT * FROM pengalamans
-            WHERE pengalamans.user_id = ${user.id}
+            WHERE pengalamans.user_id = ${pelamar.user_id}
             `, {type: QueryTypes.SELECT});
-
 
             return res.status(200).json({
                 status: true,
