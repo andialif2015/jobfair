@@ -268,14 +268,16 @@ module.exports = {
     },
     terimaLamaran: async (req, res) => {
         try{
-            const user = req.user;
+            const daftarLowonganId = req.query.daftar_lowongan_id;
+            const pelamarId = req.query.pelamar_id;
             const terimaPelamar = await Daftar_lowongan.update(
                 { 
                     status: 1 
                 },
                 { 
                     where: {
-                        id: req.body.daftar_lowongan_id
+                        id: daftarLowonganId,
+                        pelamar_id: pelamarId
                     }
                 }
             );
@@ -283,6 +285,35 @@ module.exports = {
                 status: true,
                 message: "Berhasil Terima Pelamar",
                 data: terimaPelamar
+            });
+
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    tolakLamaran: async (req, res) => {
+        try{
+            const daftarLowonganId = req.query.daftar_lowongan_id;
+            const pelamarId = req.query.pelamar_id;
+            const tolakPelamar = await Daftar_lowongan.update(
+                { 
+                    status: 2 
+                },
+                { 
+                    where: {
+                        id: daftarLowonganId,
+                        pelamar_id: pelamarId
+                    }
+                }
+            );
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil Terima Pelamar",
+                data: tolakPelamar
             });
 
         }catch(err){
