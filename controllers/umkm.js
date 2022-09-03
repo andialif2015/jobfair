@@ -246,7 +246,7 @@ module.exports = {
                 }
             );
             const daftarPelamar = await sequelize.query(`
-            SELECT daftar_lowongans.id AS daftar_lowongan_id, daftar_lowongans.waktu_daftar, daftar_lowongans.lowongan_id, daftar_lowongans.pelamar_id,pelamars.nama_lengkap, pelamars.img_url, users.no_hp, pelamars.alamat  FROM daftar_lowongans 
+            SELECT daftar_lowongans.id AS daftar_lowongan_id, daftar_lowongans.waktu_daftar, daftar_lowongans.lowongan_id, daftar_lowongans.status AS status_lowongan, daftar_lowongans.pelamar_id,pelamars.nama_lengkap, pelamars.img_url, users.no_hp, pelamars.alamat  FROM daftar_lowongans 
             LEFT JOIN pelamars ON pelamars.id = daftar_lowongans.pelamar_id
             LEFT JOIN users ON users.id = pelamars.user_id
             WHERE umkm_id = ${umkm.id}
