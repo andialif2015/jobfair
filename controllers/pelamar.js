@@ -94,5 +94,35 @@ module.exports = {
                 data: null
             })
         }
+    },
+    listLowongan: async (req, res) => {
+        try{
+            const user = req.user;
+            const pelamar = await sequelize.findOne({
+                where: {
+                    user_id: user.id
+                }
+            });
+
+            const listLowonganUser = await sequelize.query(`
+            SELECT daftar_lowongans.*, lowongans.posisi, lowongans.gaji, umkms.nama_toko, umkms.alamat, umkms.img_url FROM daftar_lowongans
+            LEFT JOIN lowongans ON lowongans.id = daftar_lowongans.lowongan_id
+            LEFT JOIN umkms ON umkms.id = daftar_lowongans.umkm_id
+            WHERE daftar_lowongans.pelamar_id = ${pelamar.id}
+            `, {type: QueryTypes.SELECT});
+
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil dapatkan list lowongan",
+                data: listLowonganUser
+            });
+
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
     }
 }
