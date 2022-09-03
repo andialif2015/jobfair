@@ -98,7 +98,7 @@ module.exports = {
     listLowongan: async (req, res) => {
         try{
             const user = req.user;
-            const pelamar = await sequelize.findOne({
+            const pelamar = await Pelamar.findOne({
                 where: {
                     user_id: user.id
                 }
