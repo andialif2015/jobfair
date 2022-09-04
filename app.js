@@ -3,17 +3,14 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+
 
 const PORT = 3001;
 const morgan = require('morgan');
 
 const path = require('path');
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-}));
+
 app.use(morgan('dev'));
 app.use("/image", express.static('public/images'));
 
