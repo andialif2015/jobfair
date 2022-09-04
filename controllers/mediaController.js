@@ -6,7 +6,7 @@ module.exports = {
         try{
             const user = req.user;
             const path = req.protocol + '://' + req.get('host') + '/image/' + req.file.filename;
-
+            res.header("Access-Control-Allow-Origin", "*");
             if(user.user_type == 1){
                 const updateUmkm = await Umkm.update(
                     { 
