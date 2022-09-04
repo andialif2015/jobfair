@@ -189,13 +189,25 @@ module.exports = {
     detailLowongan: async (req, res) =>{
         try{
             const user = req.user;
-            const lowongan_id = req.params.id;
+            const pelamar = await Pelamar.findOne({
+                where:{
+                    user_id: user.id
+                }
+            });
+            const lowonganId = req.params.id;
             const lowongan = await sequelize.query(`
             SELECT lowongans.id, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url, umkms.nama_toko
             FROM lowongans 
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
-            WHERE lowongans.id = ${lowongan_id}
+            WHERE lowongans.id = ${lowonganId}
             `, {type: QueryTypes.SELECT});
+
+            const daftarLowongan = await Daftar_lowongan.findOne({
+                where:{
+                    lowongan_id: lowonganId,
+                    pelamar_id: pelamar.id
+                }
+            });
             
             const persyaratan = await sequelize.query(`
             SELECT persyaratans.domisili, persyaratans.jk, persyaratans.keahlian, persyaratans.lainnya, persyaratans.umur, persyaratans.lainnya 
@@ -221,6 +233,7 @@ module.exports = {
                     alamat_umkm: lowongan[0].alamat,
                     img_url: lowongan[0].img_url,
                     nama_toko: lowongan[0].nama_toko,
+                    status_daftar: daftarLowongan.status,
                     persyaratan: persyaratan[0],
                     deskripsi: deskripsi
                     
