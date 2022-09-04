@@ -41,7 +41,6 @@ module.exports = {
                 })
             }
          
-            return console.log(path);
         }catch(err){
             return res.status(500).json({
                 status: false,
