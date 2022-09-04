@@ -3,7 +3,14 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
+const corsOptions = {
+    origin: '*',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+};
+
+app.use(cors(corsOptions));
 
 const PORT = 3001;
 const morgan = require('morgan');

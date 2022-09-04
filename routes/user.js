@@ -6,12 +6,7 @@ const mediaController = require('../controllers/mediaController');
 const storage = require('../middleware/storage');
 const multer  = require('multer');
 const upload = multer();
-const cors = require('cors');
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-}));
 
 router.post('/pengalaman',upload.none(), serializeToken, userController.pengalaman);
 router.post('/save-lowongan',upload.none(), serializeToken, userController.simpanLowongan);
