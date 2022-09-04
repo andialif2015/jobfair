@@ -212,7 +212,7 @@ module.exports = {
             const persyaratan = await sequelize.query(`
             SELECT persyaratans.domisili, persyaratans.jk, persyaratans.keahlian, persyaratans.lainnya, persyaratans.umur, persyaratans.lainnya 
             FROM persyaratans
-            WHERE persyaratans.lowongan_id = ${lowongan_id}
+            WHERE persyaratans.lowongan_id = ${lowonganId}
             `, {type: QueryTypes.SELECT});
 
             const deskripsi = await sequelize.query(`
