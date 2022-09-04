@@ -218,7 +218,7 @@ module.exports = {
             const deskripsi = await sequelize.query(`
             SELECT deskripsi_kerjas.deskripsi AS Deskpisi_lowongan
             FROM deskripsi_kerjas 
-            WHERE deskripsi_kerjas.lowongan_id = ${lowongan_id}
+            WHERE deskripsi_kerjas.lowongan_id = ${lowonganId}
             `, {type: QueryTypes.SELECT});
 
             return res.status(200).json({
