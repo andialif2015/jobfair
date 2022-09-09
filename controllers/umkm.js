@@ -188,6 +188,7 @@ module.exports = {
     },
     detailLowongan: async (req, res) =>{
         try{
+            let status = '';
             const user = req.user;
             const pelamar = await Pelamar.findOne({
                 where:{
@@ -210,7 +211,9 @@ module.exports = {
             });
 
             if(daftarLowongan == null){
-                daftarLowongan.status = null
+                status = null;
+            }else{
+                status = daftarLowongan.status;
             } 
             
             const persyaratan = await sequelize.query(`
