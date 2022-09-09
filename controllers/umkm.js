@@ -208,6 +208,10 @@ module.exports = {
                     pelamar_id: pelamar.id
                 }
             });
+
+            if(daftarLowongan == null){
+                daftarLowongan.status = null
+            } 
             
             const persyaratan = await sequelize.query(`
             SELECT persyaratans.domisili, persyaratans.jk, persyaratans.keahlian, persyaratans.lainnya, persyaratans.umur, persyaratans.lainnya 
