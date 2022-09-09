@@ -240,7 +240,7 @@ module.exports = {
                     alamat_umkm: lowongan[0].alamat,
                     img_url: lowongan[0].img_url,
                     nama_toko: lowongan[0].nama_toko,
-                    status_daftar: daftarLowongan.status,
+                    status_daftar: status,
                     persyaratan: persyaratan[0],
                     deskripsi: deskripsi
                     
