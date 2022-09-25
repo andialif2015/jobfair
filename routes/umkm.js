@@ -11,7 +11,9 @@ router.get('/saved', serializeToken,upload.none(), umkmController.getLowonganSav
 router.get('/list-pelamar', serializeToken,upload.none(), umkmController.getPelamar);
 router.get('/lowongan/detail/:id',upload.none(), serializeToken, umkmController.detailLowongan);
 router.get('/riwayat/lowongan',upload.none(), serializeToken, umkmController.riwayatLowongan);
+router.get('/rekomendasi',upload.none(), serializeToken, umkmController.rekomendasi);
 router.put('/terima-lamaran',upload.none(), serializeToken, umkmController.terimaLamaran);
 router.put('/tolak-lamaran',upload.none(), serializeToken, umkmController.tolakLamaran);
+router.put('/count',upload.none(), serializeToken, umkmController.postKlik);
 
 module.exports = router;

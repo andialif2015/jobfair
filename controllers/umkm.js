@@ -1,4 +1,4 @@
-const {  Umkm, Lowongan, Deskripsi_kerja, Persyaratan, Pelamar, sequelize, Daftar_lowongan } = require('../models');
+const {  Umkm, Lowongan, Deskripsi_kerja, Persyaratan, Pelamar, sequelize, Daftar_lowongan, Trx_klik } = require('../models');
 const Validator = require('fastest-validator');
 const v = new Validator();
 const { QueryTypes, Op } = require('sequelize');
@@ -60,6 +60,7 @@ module.exports = {
                     }
                 }
             );
+            
             const dataRequest = {
                 posisi: req.body.posisi,
                 gaji: req.body.gaji,
@@ -100,6 +101,7 @@ module.exports = {
                 tgl_akhir: req.body.tgl_akhir,
                 umkm_id: umkm.id
             });
+
             for(i in description){
                 let deskripsiLowongan = await Deskripsi_kerja.create({
                     deskripsi: description[i],
@@ -161,7 +163,7 @@ module.exports = {
 
             
             const lowongan = await sequelize.query(`
-            SELECT lowongans.*, umkms.alamat, umkms.nama_toko, umkms.img_url 
+            SELECT lowongans.*, umkms.alamat, umkms.nama_toko, umkms.img_url
             FROM lowongans 
             LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
             `, {type: QueryTypes.SELECT});
@@ -243,7 +245,6 @@ module.exports = {
                     status_daftar: status,
                     persyaratan: persyaratan[0],
                     deskripsi: deskripsi
-                    
                 }
             })
         }catch(err){
@@ -382,6 +383,85 @@ module.exports = {
                 data: null
             })
         }
+    },
+    postKlik: async(req,res) => {
+        try{
+            let jml_klik = parseInt(req.query.jumlahKlik);
+            const lowonganId = parseInt(req.query.lowonganId);
+            const user = req.user;
+            const [klik, created] = await Trx_klik.findOrCreate({
+                where: {
+                    lowongan_id: lowonganId,
+                    user_id: user.id
+                },
+                defaults:{
+                    jumlah_klik: jml_klik
+                }
+            });
+            if(created == false){
+                jml_klik += klik.jumlah_klik;
+                const update = await Trx_klik.update({
+                    jumlah_klik: jml_klik
+                }
+                ,{
+                    where: {
+                        lowongan_id: lowonganId,
+                        user_id: user.id
+                    }
+                });
+                return res.status(201).json({
+                    status: true,
+                    message: "success",
+                    data: null
+                })
+                
+            }
+            return res.status(200).json({
+                status: true,
+                message: "success",
+                data: null
+            })
+
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    },
+    rekomendasi: async(req,res) => {
+        try{
+            const user = req.user;
+            const rekomendasi = await sequelize.query(`
+            SELECT lowongans.*, umkms.alamat, umkms.nama_toko, umkms.img_url, trx_kliks.jumlah_klik 
+            FROM lowongans 
+            LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
+            LEFT JOIN trx_kliks ON trx_kliks.lowongan_id = lowongans.id
+            WHERE trx_kliks.user_id = ${user.id}
+				ORDER BY trx_kliks.jumlah_klik DESC
+            `, {type: QueryTypes.SELECT});
+
+            for(let x in rekomendasi){
+                rekomendasi[x].tgl_mulai = dateHelper.dateFormat(rekomendasi[x].tgl_mulai);
+                rekomendasi[x].tgl_akhir = dateHelper.dateFormat(rekomendasi[x].tgl_akhir);
+                rekomendasi[x].createdAt = dateHelper.dateFormat(rekomendasi[x].createdAt);
+                rekomendasi[x].updatedAt = dateHelper.dateFormat(rekomendasi[x].updatedAt);
+            }
+            
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil dapatkan semua lowongan",
+                data: rekomendasi
+            })
+
+
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
     }
-    
 }
