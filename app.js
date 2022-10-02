@@ -3,21 +3,21 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
-// const cors = require('cors');
+const cors = require('cors');
 
-// const corsOptions = {
-//     origin: '*',
-//     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-// };
+const corsOptions = {
+    origin: 'http://jobfair.lentera-lipuku.com/',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   });
 
 const PORT = 3001;
 const morgan = require('morgan');
