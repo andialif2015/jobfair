@@ -351,22 +351,26 @@ module.exports = {
                     where: { id: req.body.lowongan_id }
                 }
             );
-            
-            const checkTrxSave = await Trx_save_lowongan.findOne({
-                where:{
-                    [Op.and]: [{pelamar_id: pelamar.id},{lowongan_id: lowongan.id}]
+
+            const [saveLowongan, created] = await Trx_save_lowongan.findOrCreate({
+                where: {
+                    pelamar_id: pelamar.id,
+                    lowongan_id: lowongan.id
+                },
+                defaults:{
+                    umkm_id: lowongan.umkm_id,
+                       saved: req.body.saved
                 }
             });
-            // return res.send(!checkTrxSave);
-            if(checkTrxSave){
-                
-               const updateTrx_save_lowongan = await Trx_save_lowongan.update(
+            if(created == false){
+                const updateTrx_save_lowongan = await Trx_save_lowongan.update(
                     { 
                         saved: req.body.saved
                     },
                     { 
                         where:{
-                            [Op.and]: [{pelamar_id: pelamar.id},{lowongan_id: lowongan.id}]
+                            pelamar_id: pelamar.id,
+                            lowongan_id: lowongan.id
                         }
                     }
                 );
@@ -375,20 +379,51 @@ module.exports = {
                     message: "Berhasil Update save Lowongan",
                     data: updateTrx_save_lowongan
                 })
-            }else{
-                
-                const trx_save_lowongan = await Trx_save_lowongan.create({
-                    pelamar_id: pelamar.id,
-                    umkm_id: lowongan.umkm_id,
-                    lowongan_id: lowongan.id,
-                    saved: req.body.saved
-                });
-                return res.status(200).json({
-                    status: true,
-                    message: "Berhasil Simpan saved Lowongan",
-                    data: trx_save_lowongan
-                })
+
             }
+            // const checkTrxSave = await Trx_save_lowongan.findOne({
+            //     where:{
+            //         [Op.and]: [{pelamar_id: pelamar.id},{lowongan_id: lowongan.id}]
+            //     }
+            // });
+            // return res.send(!checkTrxSave);
+            // if(checkTrxSave){
+                
+            //    const updateTrx_save_lowongan = await Trx_save_lowongan.update(
+            //         { 
+            //             saved: req.body.saved
+            //         },
+            //         { 
+            //             where:{
+            //                 [Op.and]: [{pelamar_id: pelamar.id},{lowongan_id: lowongan.id}]
+            //             }
+            //         }
+            //     );
+            //     return res.status(200).json({
+            //         status: true,
+            //         message: "Berhasil Update save Lowongan",
+            //         data: updateTrx_save_lowongan
+            //     })
+            // }else{
+                
+            //     const trx_save_lowongan = await Trx_save_lowongan.create({
+            //         pelamar_id: pelamar.id,
+            //         umkm_id: lowongan.umkm_id,
+            //         lowongan_id: lowongan.id,
+            //         saved: req.body.saved
+            //     });
+            //     return res.status(200).json({
+            //         status: true,
+            //         message: "Berhasil Simpan saved Lowongan",
+            //         data: trx_save_lowongan
+            //     })
+            // }
+
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil Simpan saved Lowongan",
+                data: null
+            })
 
             
 
