@@ -17,26 +17,30 @@ module.exports = {
                         user_id: user.id
                     }
                 }
-            );           
-            
-            const savedLowongan = await sequelize.query(`
-                SELECT trx_save_lowongans.*, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.nama_toko, umkms.img_url FROM trx_save_lowongans
-                LEFT JOIN pelamars ON pelamars.id = trx_save_lowongans.pelamar_id
-                LEFT JOIN umkms ON umkms.id = trx_save_lowongans.umkm_id
-                LEFT JOIN lowongans ON lowongans.id = trx_save_lowongans.lowongan_id
-                WHERE pelamar_id = ${pelamar.id}`,
-                {type: QueryTypes.SELECT});
+            );
 
-            for(let x in savedLowongan){
-                savedLowongan[x].tgl_mulai = dateHelper.dateFormat(savedLowongan[x].tgl_mulai);
-                savedLowongan[x].tgl_akhir = dateHelper.dateFormat(savedLowongan[x].tgl_akhir);
-            }
+            return res.send(pelamar);
             
-            return res.status(200).json({
-                status: true,
-                message: "Berhasil",
-                data: savedLowongan
-            })
+            
+            
+            // const savedLowongan = await sequelize.query(`
+            //     SELECT trx_save_lowongans.*, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.nama_toko, umkms.img_url FROM trx_save_lowongans
+            //     LEFT JOIN pelamars ON pelamars.id = trx_save_lowongans.pelamar_id
+            //     LEFT JOIN umkms ON umkms.id = trx_save_lowongans.umkm_id
+            //     LEFT JOIN lowongans ON lowongans.id = trx_save_lowongans.lowongan_id
+            //     WHERE pelamar_id = ${pelamar.id}`,
+            //     {type: QueryTypes.SELECT});
+
+            // for(let x in savedLowongan){
+            //     savedLowongan[x].tgl_mulai = dateHelper.dateFormat(savedLowongan[x].tgl_mulai);
+            //     savedLowongan[x].tgl_akhir = dateHelper.dateFormat(savedLowongan[x].tgl_akhir);
+            // }
+            
+            // return res.status(200).json({
+            //     status: true,
+            //     message: "Berhasil",
+            //     data: savedLowongan
+            // })
                 
         }catch(err){
             return res.status(500).json({
