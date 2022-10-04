@@ -30,18 +30,17 @@ module.exports = {
                 LEFT JOIN lowongans ON lowongans.id = trx_save_lowongans.lowongan_id
                 WHERE pelamar_id = ${pelamar.id}`,
                 {type: QueryTypes.SELECT});
-                return res.send(savedLowongan);
 
-            // for(let x in savedLowongan){
-            //     savedLowongan[x].tgl_mulai = dateHelper.dateFormat(savedLowongan[x].tgl_mulai);
-            //     savedLowongan[x].tgl_akhir = dateHelper.dateFormat(savedLowongan[x].tgl_akhir);
-            // }
+            for(let x in savedLowongan){
+                savedLowongan[x].tgl_mulai = dateHelper.dateFormat(savedLowongan[x].tgl_mulai);
+                savedLowongan[x].tgl_akhir = dateHelper.dateFormat(savedLowongan[x].tgl_akhir);
+            }
             
-            // return res.status(200).json({
-            //     status: true,
-            //     message: "Berhasil",
-            //     data: savedLowongan
-            // })
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil",
+                data: savedLowongan
+            })
                 
         }catch(err){
             return res.status(500).json({
