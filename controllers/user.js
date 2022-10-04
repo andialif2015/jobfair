@@ -344,7 +344,8 @@ module.exports = {
                     }
                 }
             );
-            return res.send(pelamar);
+
+            return res.send(user);
             
             const lowongan = await Lowongan.findOne(
                 {
