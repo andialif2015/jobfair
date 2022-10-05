@@ -5,12 +5,7 @@ const routes = require('./routes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const corsOptions = {
-    origin: 'http://jobfair.lentera-lipuku.com/',
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 // app.use(function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
