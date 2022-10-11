@@ -6,7 +6,7 @@ const multer  = require('multer');
 const upload = multer();
 
 
-router.post('/daftar-lowongan',upload.none(), pelamarController.daftarLowongan);
+router.post('/daftar-lowongan', serializeToken,upload.none(), pelamarController.daftarLowongan);
 router.get('/list-lowongan', serializeToken,upload.none(), pelamarController.listLowongan);
 router.get('/detail', serializeToken,upload.none(), pelamarController.detailPelamar);
 

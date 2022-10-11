@@ -259,6 +259,54 @@ module.exports = {
             })
         }
     },
+    detailLowonganId: async (req,res) =>{
+        try{
+            const lowonganId = req.params.id;
+            const lowongan = await sequelize.query(`
+            SELECT lowongans.id, lowongans.posisi, lowongans.gaji, lowongans.tgl_mulai, lowongans.tgl_akhir, umkms.alamat, umkms.img_url, umkms.nama_toko
+            FROM lowongans 
+            LEFT JOIN umkms ON umkms.id = lowongans.umkm_id
+            WHERE lowongans.id = ${lowonganId}
+            `, {type: QueryTypes.SELECT});
+            
+            const persyaratan = await sequelize.query(`
+            SELECT persyaratans.domisili, persyaratans.jk, persyaratans.keahlian, persyaratans.lainnya, persyaratans.umur, persyaratans.lainnya 
+            FROM persyaratans
+            WHERE persyaratans.lowongan_id = ${lowonganId}
+            `, {type: QueryTypes.SELECT});
+
+            const deskripsi = await sequelize.query(`
+            SELECT deskripsi_kerjas.deskripsi AS Deskpisi_lowongan
+            FROM deskripsi_kerjas 
+            WHERE deskripsi_kerjas.lowongan_id = ${lowonganId}
+            `, {type: QueryTypes.SELECT});
+
+            return res.status(200).json({
+                status: true,
+                message: "Berhasil ambil detail lowongan",
+                data: {
+                    id_lowongan: lowongan[0].id,
+                    posisi: lowongan[0].posisi,
+                    gaji: lowongan[0].gaji,
+                    tgl_mulai: lowongan[0].tgl_mulai,
+                    tgl_akhir: lowongan[0].tgl_akhir,
+                    alamat_umkm: lowongan[0].alamat,
+                    img_url: lowongan[0].img_url,
+                    nama_toko: lowongan[0].nama_toko,
+                    status_daftar: false,
+                    persyaratan: persyaratan[0],
+                    deskripsi: deskripsi
+                }
+            })
+        }catch(err){
+            return res.status(500).json({
+                status: false,
+                message: err.message,
+                data: null
+            })
+        }
+    }
+    ,
     getPelamar: async (req, res) => {
         try{
             const user = req.user;
